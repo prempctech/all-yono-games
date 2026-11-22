@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://yonogameshub.netlify.app/sitemap.xml
