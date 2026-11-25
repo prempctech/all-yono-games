@@ -2211,5 +2211,23 @@ footer.site{margin-top:54px;border-top:1px solid var(--line);background:var(--bg
   apply();
 })();
 </script>
+<script>
+/* Per-app Download tracking (25 Nov 2026): every Download click sends a GA4
+   'download_click' event with the app name + slug, so GA4 can show WHICH app
+   was downloaded. Falls back to the closest card's data-slug + h3 text. */
+(function(){
+  function track(btn){
+    var slug = btn.getAttribute('data-app-slug');
+    var name = btn.getAttribute('data-app-name');
+    var card = btn.closest('article[data-slug]');
+    if(!slug && card) slug = card.getAttribute('data-slug');
+    if(!name && card){ var h = card.querySelector('h3'); if(h) name = h.textContent.replace(/\s+/g,' ').trim(); }
+    if(window.gtag){ gtag('event','download_click',{app_name: name||'unknown', app_slug: slug||'unknown', page_path: location.pathname}); }
+  }
+  document.querySelectorAll('a.btn-dl, a[data-app-slug]').forEach(function(b){
+    b.addEventListener('click', function(){ track(b); });
+  });
+})();
+</script>
 </body>
 </html>
